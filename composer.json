@@ -1,0 +1,19 @@
+{
+    "name": "justinrainbow/guzzle-github",
+    "type": "library",
+    "description": "Guzzle Github",
+    "keywords": ["Guzzle"],
+    "authors": [
+        {
+            "name": "Justin Rainbow",
+            "email": "justin.rainbow@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "guzzle/guzzle": "*"
+    },
+    "autoload": {
+        "psr-0": { "Guzzle\\Github": "/src" }
+    }
+}

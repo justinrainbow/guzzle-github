@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<client>
+    <commands>
+        <command name="get_user" method="GET" uri="/user">
+            <doc>Get the authenticated User data</doc>
+        </command>
+        <command name="update_comment" method="PUT" uri="/comments/{{id}}">
+            <doc>Update a comment</doc>
+            <param name="id" type="string" required="true" doc="Comment ID" />
+            <param name="data" type="string" location="body" doc="Comment XML" />
+        </command>
+        <command name="delete_comment" method="DELETE" uri="/comments/{{id}}">
+            <doc>Delete a comment by ID</doc>
+            <param name="id" type="string" required="true" />
+        </command>
+    </commands>
+</client>
