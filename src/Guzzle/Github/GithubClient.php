@@ -5,13 +5,29 @@ namespace Guzzle\Github;
 use Guzzle\Service\Client;
 use Guzzle\Service\Inspector;
 use Guzzle\Service\Description\XmlDescriptionBuilder;
+use Guzzle\Http\Message\RequestInterface;
 
 class GithubClient extends Client
 {
     /**
+     * @var string Client ID
+     */
+    protected $clientId;
+
+    /**
+     * @var string Client secret
+     */
+    protected $clientSecret;
+
+    /**
      * @var string Access Token
      */
     protected $accessToken;
+
+    /**
+     * @var string Redirect URI
+     */
+    protected $redirectUri;
 
     /**
      * Factory method to create a new GithubClient
@@ -27,19 +43,20 @@ class GithubClient extends Client
     {
         $default = array(
             'base_url' => 'https://api.github.com',
-            'scheme' => 'https'
+            'scheme'   => 'https'
         );
-        $required = array('access_token', 'base_url');
+        $required = array('base_url', 'client_id', 'client_secret');
         $config = Inspector::prepareConfig($config, $default, $required);
 
         $client = new self(
             $config->get('base_url'),
-            $config->get('access_token')
+            $config->get('client_id'),
+            $config->get('client_secret')
         );
         $client->setConfig($config);
 
         // Uncomment the following two lines to use an XML service description
-        $client->setDescription(XmlDescriptionBuilder::build(__DIR__ . DIRECTORY_SEPARATOR . 'client.xml'));
+        $client->setDescription(XmlDescriptionBuilder::build(__DIR__ . '/client.xml'));
 
         return $client;
     }
@@ -48,11 +65,45 @@ class GithubClient extends Client
      * Client constructor
      *
      * @param string $baseUrl Base URL of the web service
-     * @param string $accessToken API Access Token
+     * @param string $clientId
+     * @param string $clientSecret
      */
-    public function __construct($baseUrl, $accessToken)
+    public function __construct($baseUrl, $clientId, $clientSecret)
     {
         parent::__construct($baseUrl);
-        $this->accessToken = $accessToken;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+    }
+
+    public function createRequest($method = RequestInterface::GET, $uri = null, $headers = null, $body = null)
+    {
+        $request = parent::createRequest($method, $uri, $headers, $body);
+
+        if (isset($this->accessToken)) {
+            $request->setHeader('Authorization', 'bearer ' . $this->accessToken);
+        }
+
+        return $request;
+    }
+
+    public function setAccessToken($token)
+    {
+        $this->accessToken = $token;
+    }
+
+    public function setRedirectUri($redirectUri)
+    {
+        $this->redirectUri = $redirectUri;
+    }
+
+    public function getDefaultHeaders()
+    {
+        $headers = parent::getDefaultHeaders();
+
+        if (isset($this->accessToken)) {
+            $headers->add('Authorization', 'bearer ' . $this->accessToken);
+        }
+
+        return $headers;
     }
 }

@@ -4,6 +4,9 @@
         <command name="get_user" method="GET" uri="/user">
             <doc>Get the authenticated User data</doc>
         </command>
+        <command name="get_user_orgs" method="GET" uri="/user/orgs">
+            <doc>Get the authenticated User data</doc>
+        </command>
         <command name="update_comment" method="PUT" uri="/comments/{{id}}">
             <doc>Update a comment</doc>
             <param name="id" type="string" required="true" doc="Comment ID" />
