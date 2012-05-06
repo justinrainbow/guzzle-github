@@ -25,6 +25,11 @@ class GithubClient extends Client
     protected $accessToken;
 
     /**
+     * @var string Type of Access Token
+     */
+    protected $accessTokenType = 'bearer';
+
+    /**
      * @var string Redirect URI
      */
     protected $redirectUri;
@@ -86,9 +91,10 @@ class GithubClient extends Client
         return $request;
     }
 
-    public function setAccessToken($token)
+    public function setAccessToken($token, $type = 'bearer')
     {
         $this->accessToken = $token;
+        $this->accessTokenType = $type;
     }
 
     public function setRedirectUri($redirectUri)
@@ -101,7 +107,7 @@ class GithubClient extends Client
         $headers = parent::getDefaultHeaders();
 
         if (isset($this->accessToken)) {
-            $headers->add('Authorization', 'bearer ' . $this->accessToken);
+            $headers->add('Authorization', $this->accessTokenType . ' ' . $this->accessToken);
         }
 
         return $headers;
