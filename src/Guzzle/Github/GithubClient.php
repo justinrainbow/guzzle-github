@@ -4,7 +4,7 @@ namespace Guzzle\Github;
 
 use Guzzle\Service\Client;
 use Guzzle\Service\Inspector;
-use Guzzle\Service\Description\XmlDescriptionBuilder;
+use Guzzle\Service\Description\ServiceDescription;
 use Guzzle\Http\Message\RequestInterface;
 
 class GithubClient extends Client
@@ -61,7 +61,7 @@ class GithubClient extends Client
         $client->setConfig($config);
 
         // Uncomment the following two lines to use an XML service description
-        $client->setDescription(XmlDescriptionBuilder::build(__DIR__ . '/client.xml'));
+        $client->setDescription(ServiceDescription::factory(__DIR__ . '/client.xml'));
 
         return $client;
     }
